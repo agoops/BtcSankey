@@ -1,0 +1,40 @@
+{
+  "nodes": [
+    {
+      "name": "1FFRuJT7xiBZ5xN25VGzxdKWgZdxXgjAJp"
+    },
+    {
+      "name": "1spG2ynfANKTYsbgsSNh9abV7SsHVhhRm"
+    },
+    {
+      "name": "1KdUm2jCYKfapM1HjSmHxSBbAXFNmuFD3y"
+    }
+  ],
+  "links": [
+    {
+      "source": "1FFRuJT7xiBZ5xN25VGzxdKWgZdxXgjAJp",
+      "target": "1spG2ynfANKTYsbgsSNh9abV7SsHVhhRm",
+      "value": "5575.342465753424657534246575"
+    },
+    {
+      "source": "1FFRuJT7xiBZ5xN25VGzxdKWgZdxXgjAJp",
+      "target": "1FFRuJT7xiBZ5xN25VGzxdKWgZdxXgjAJp",
+      "value": "734424.6575342465753424657534"
+    },
+    {
+      "source": "1FFRuJT7xiBZ5xN25VGzxdKWgZdxXgjAJp",
+      "target": "1FFRuJT7xiBZ5xN25VGzxdKWgZdxXgjAJp",
+      "value": "734424.6575342465753424657534"
+    },
+    {
+      "source": "1spG2ynfANKTYsbgsSNh9abV7SsHVhhRm",
+      "target": "1FFRuJT7xiBZ5xN25VGzxdKWgZdxXgjAJp",
+      "value": "50000"
+    },
+    {
+      "source": "1KdUm2jCYKfapM1HjSmHxSBbAXFNmuFD3y",
+      "target": "1FFRuJT7xiBZ5xN25VGzxdKWgZdxXgjAJp",
+      "value": "749367.0886075949367088607595"
+    }
+  ]
+}
