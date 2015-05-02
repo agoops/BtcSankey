@@ -49,9 +49,9 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
 
-ROOT_URLCONF = 'BtcTracker.urls'
+ROOT_URLCONF = 'BtcSankey.urls'
 
-WSGI_APPLICATION = 'BtcTracker.wsgi.application'
+WSGI_APPLICATION = 'BtcSankey.wsgi.application'
 
 
 # Database

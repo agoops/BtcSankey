@@ -17,6 +17,13 @@ def index(request):
 	# return render(request, 'sankey.html')
 	return HttpResponse(template.render(context))
 
+def landing(request):
+	template = loader.get_template('landing.html')
+	context = RequestContext(request)
+	return HttpResponse(template.render(context))
+
+
+	
 def loop(request):
 	template = loader.get_template('selfloop.html')
 	jsonString = getSankey('1LZpJP5zKGAXnH4SnJF98cVn7sBHJroViG')
