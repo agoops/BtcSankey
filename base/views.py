@@ -11,10 +11,16 @@ import json
 def index(request):
 	template = loader.get_template('sankey.html')
 	jsonString = getSankey('1DJv4wgJXCwK4m2BEmjg5P4meYKhKtcp9K')
-	print jsonString
+	# print jsonString
 	jsonObject = json.loads(jsonString)
 	context = RequestContext(request, {'jsonObject': jsonObject, 'jsonString': jsonString})
 	# return render(request, 'sankey.html')
+	return HttpResponse(template.render(context))
+
+def loop(request):
+	template = loader.get_template('selfloop.html')
+	jsonString = getSankey('1LZpJP5zKGAXnH4SnJF98cVn7sBHJroViG')
+	context = RequestContext(request, {'jsonString': jsonString})
 	return HttpResponse(template.render(context))
 
 
