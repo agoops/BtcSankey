@@ -177,16 +177,24 @@ change = function(d) {
 		}).on("dblclick", function(d) {
 			console.log(d.name);
 			var graphString = document.getElementById("GRAPHSTRING").innerHTML;
+			var explored = document.getElementById("EXPLOREDSTRING").innerHTML;
+			console.log(explored);
 			var address = d.name;
-			console.log(graphString);
 			$.ajax({
 			    url:"/build",
 			    type: "POST",
-			    data: {'graphString' : graphString, 'address': address},
+			    data: {'graphString' : graphString, 'address': address, 'explored':explored},
 			    success:function(response){
 			    	console.log(response);
-			    	var newGraphString = response;
+			    	var jsonResponse = JSON.parse(response);
+			    	var newGraphString = jsonResponse['graphString'];
+			    	var explored = jsonResponse['explored'];
+			    	// console.log('explored: ' + explored);
 			    	var jsonObj = JSON.parse(newGraphString);
+
+			    	document.getElementById("GRAPHSTRING").innerHTML = newGraphString;
+			    	document.getElementById("EXPLOREDSTRING").innerHTML = explored;
+
 			    	draw2(jsonObj);
 			    },
 			    complete:function(){},

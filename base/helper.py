@@ -89,7 +89,7 @@ def createIncomingEdges(exploredAddresses, unexploredAddresses, edge_factory, ed
 			received = o.value
 			ratio = Decimal(received) / Decimal(total_output)
 			for i in inputs:
-				if i.address in exploredAddresses:
+				if i.address in exploredAddresses or i.address == address_string:
 					continue
 				weighted_received = ratio * Decimal(i.value)
 				if i.address in unexploredAddresses:

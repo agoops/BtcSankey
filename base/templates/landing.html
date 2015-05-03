@@ -1,46 +1,53 @@
 <!DOCTYPE html>
-<html>
-<head>
-	<title>Bootstrap In Practice - Landing Page Example</title>
-	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-	<!-- Bootstrap -->
-	<link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet" />
+<HEAD>
+<TITLE>bitcoin-class: visualizing transactions</TITLE>
+<style>
+#centeredBlock {
+position:absolute; 
+top:50%; 
+left:50%; 
+transform: translate(-50%, -50%); 
+}
+body {
+	background-color: #005C99;
+}
+h1 {
+	font-family: Futura, 'Trebuchet MS', Arial, sans-serif;
+	font-weight: normal;
+	color: #FFFFFF;
+}
+h3 {
+	font-family: Futura, 'Trebuchet MS', Arial, sans-serif;
+	font-weight: normal;
+	color: #FFFFFF;
+}
+h4 {
+	font-family: Futura, 'Trebuchet MS', Arial, sans-serif;
+	font-weight: normal;
+	color: #FFFFFF;
+}
+p {
+	font-family: Futura, 'Trebuchet MS', Arial, sans-serif;
+}
+</style>
 
-	<style>
-
-	body {
-		padding-top: 20px;
-	}
-
-	.margin-base-vertical {
-		margin: 40px 0;
-	}
-
-	</style>
-
-</head>
 <body>
+<center>
+<div id="centeredBlock">
+<h1>Visualizing Bitcoin</h1>
 
-	<div class="container">
-		<div class="row">
-			<div class="col-md-6 col-md-offset-3">
+<h3>Sankey visualizations</h4>
 
-				
-
-				<form action="/loop" method="post" class="margin-base-vertical">{% csrf_token %}
-					<p class="input-group">
-						<input type="text" class="form-control input-lg center" name="address" placeholder="1LzP..." value="1FFRuJT7xiBZ5xN25VGzxdKWgZdxXgjAJp" />
-					</p>
-					<p class="help-block text-center"><small>Enter an adress.</small></p>
-					<p class="text-center">
-						<button type="submit" class="btn btn-success btn-lg">Sankey</button>
-					</p>
-					</span>
-				</form>
-
-			</div>
-		</div>
-	</div>
-
+<form action="/loop" method="post" class="margin-base-vertical">{% csrf_token %}
+	<p class="input-group">
+		<input type="text" class="form-control input-lg center" name="address" placeholder="Enter an address" value="17bWK1kGySckEV7jpNBHUmHuX1UoHeHoAs" />
+	</p>
+	<p class="text-center">
+	<button type="submit" class="btn btn-success"><p>Generate Sankey Diagram</p></button>
+	</p>
+	</span>
+</form>
+<h4>Alex Coffin, Ankit Gupta, Corrigan Blanchfield, and Tara Raj for CS 4501: Cryptocurrencies</h4>
+</div>
+</center>
 </body>
-</html>

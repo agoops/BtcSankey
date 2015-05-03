@@ -5,6 +5,7 @@ from helper import *
 from blockchain import blockexplorer
 import json
 from django.views.decorators.csrf import csrf_exempt
+import ast
 
 # Create your views here.
 
@@ -29,8 +30,10 @@ def loop(request):
 	address = request.POST.get('address')
 	# '1FFRuJT7xiBZ5xN25VGzxdKWgZdxXgjAJp'
 	template = loader.get_template('selfloop.html')
-	jsonString = getSankey(address)
-	context = RequestContext(request, {'jsonString': jsonString})
+	jsonString,exploredAddresses = getSankey(address)
+	myList = list(exploredAddresses)
+	# print myList
+	context = RequestContext(request, {'jsonString': jsonString, 'explored': myList})
 	return HttpResponse(template.render(context))
 
 @csrf_exempt
@@ -38,9 +41,15 @@ def build(request):
 	if request.method == 'POST':
 		graphString = request.POST.get('graphString')
 		address = request.POST.get('address')
+		explored = request.POST.get('explored')
+		exploredAddresses = set(ast.literal_eval(explored))
+		if (address in exploredAddresses):
+			result = {'graphString': graphString, 'explored': str(list(exploredAddresses))}
+			return HttpResponse(json.dumps(result))
 		print ''
-		print address
-		print graphString
+		# print address
+		# print explored
+		# print graphString
 		print ''
 
 		edge_factory = EdgeFactory()
@@ -63,14 +72,16 @@ def build(request):
 			edges.append(edge)
 
 		# need to pass in already explored addresses also
-		exploredAddresses = set()
-		newGraphString = buildSankey(exploredAddresses, edge_factory, edges, address)
-		print exploredAddresses
-		return HttpResponse(newGraphString)
+		newGraphString, exploredAddresses = buildSankey(exploredAddresses, edge_factory, edges, address)
+		result = {'graphString': newGraphString, 'explored': str(list(exploredAddresses))}
+		
+		return HttpResponse(json.dumps(result))
 	else:
 		return HttpResponse('NOPE!')
 
 def buildSankey(exploredAddresses, edge_factory, edges, address):
+	print 'explored:', exploredAddresses
+	print 'address:', address
 	address_string = address
 	address_object = blockexplorer.get_address(address_string)
 	transactions = address_object.transactions
@@ -83,7 +94,7 @@ def buildSankey(exploredAddresses, edge_factory, edges, address):
 
 	exploredAddresses.add(address_string)
 	result = printSankeyInfo(edge_factory, edges)
-	return result
+	return result, exploredAddresses
 
 def getSankey(address):
 	unexploredAddresses = {}
@@ -99,11 +110,11 @@ def getSankey(address):
 		inputs = t.inputs
 		outputs = t.outputs
 		createLeavingEdges(exploredAddresses, unexploredAddresses, edge_factory, edges, address_string, inputs, outputs)
-		createIncomingEdges(exploredAddresses, unexploredAddresses, edge_factory, edges,address_string,inputs,outputs)
+		createIncomingEdges(exploredAddresses, unexploredAddresses, edge_factory, edges, address_string, inputs, outputs)
 
 	exploredAddresses.add(address_string)
 	result = printSankeyInfo(edge_factory, edges)
-	return result
+	return result, exploredAddresses
 
 
 

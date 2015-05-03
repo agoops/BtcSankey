@@ -208,7 +208,7 @@
             <div style="display:block;overflow: hidden;white-space: nowrap;"><span style="float:left;">Move nodes:</span>
                 <div style="float:right; padding-right:0; margin-right:0;">
                     <div style="font-size:20px;font-weight:bold;line-height:10px;">
-                        <input title="Enable horizontal node dragging" type="checkbox" id="xmove">
+                        <input title="Enable horizontal node dragging" type="checkbox" id="xmove" checked>
                         <label for="xmove">↔</label>
                         <img alt="" style="width:5px;height:0px;">
                         <input title="Enable vertical node dragging" type="checkbox" id="ymove" checked>
@@ -301,6 +301,8 @@
         <script src="/static/food.js"></script>
         <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.11.2.min.js"></script>
         <div id="GRAPHSTRING" style="display:none">{{jsonString}}</div>
+        <div id="EXPLOREDSTRING" style="display:none">{{explored}}</div>
+
 	   <script>
         console.log("Got here");
         var jsonString = "{{jsonString|escapejs}}";
