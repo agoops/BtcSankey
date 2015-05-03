@@ -175,12 +175,29 @@ change = function(d) {
 				return l.source == d || l.target == d;
 			}).transition().style('opacity', lowopacity);
 		}).on("dblclick", function(d) {
-			svg.selectAll(".link").filter(function(l) {
-				return l.target == d;
-			}).attr("display", function() {
-				if (d3.select(this).attr("display") == "none") return "inline"
-				else return "none"
+			console.log(d.name);
+			var graphString = document.getElementById("GRAPHSTRING").innerHTML;
+			var address = d.name;
+			console.log(graphString);
+			$.ajax({
+			    url:"/build",
+			    type: "POST",
+			    data: {'graphString' : graphString, 'address': address},
+			    success:function(response){
+			    	console.log(response);
+			    	var newGraphString = response;
+			    	var jsonObj = JSON.parse(newGraphString);
+			    	draw2(jsonObj);
+			    },
+			    complete:function(){},
+			    error:function (xhr, textStatus, thrownError){}
 			});
+			// svg.selectAll(".link").filter(function(l) {
+			// 	return l.target == d;
+			// }).attr("display", function() {
+			// 	if (d3.select(this).attr("display") == "none") return "inline"
+			// 	else return "none"
+			// });
 		}).append("title").text(function(i) {
 			return i.name + "\n" + format2(i.value)
 			
