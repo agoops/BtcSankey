@@ -27,14 +27,17 @@ def landing(request):
 
 	
 def loop(request):
-	address = request.POST.get('address')
-	# '1FFRuJT7xiBZ5xN25VGzxdKWgZdxXgjAJp'
-	template = loader.get_template('selfloop.html')
-	jsonString,exploredAddresses = getSankey(address)
-	myList = list(exploredAddresses)
-	# print myList
-	context = RequestContext(request, {'jsonString': jsonString, 'explored': myList})
-	return HttpResponse(template.render(context))
+	if request.method == "POST":
+		address = request.POST.get('address')
+		# '1FFRuJT7xiBZ5xN25VGzxdKWgZdxXgjAJp'
+		template = loader.get_template('selfloop.html')
+		jsonString,exploredAddresses = getSankey(address)
+		myList = list(exploredAddresses)
+		# print myList
+		context = RequestContext(request, {'jsonString': jsonString, 'explored': myList})
+		return HttpResponse(template.render(context))
+	if request.method == "GET":
+		return HttpResponse("You have to start from the landing page as of now!")
 
 @csrf_exempt
 def build(request):
@@ -46,11 +49,11 @@ def build(request):
 		if (address in exploredAddresses):
 			result = {'graphString': graphString, 'explored': str(list(exploredAddresses))}
 			return HttpResponse(json.dumps(result))
-		print ''
+		# print ''
 		# print address
 		# print explored
 		# print graphString
-		print ''
+		# print ''
 
 		edge_factory = EdgeFactory()
 		edges = []
@@ -71,7 +74,6 @@ def build(request):
 			edge = Edge(s='onthefly', t='onthefly', w=weight, si=source_index, ti=target_index)
 			edges.append(edge)
 
-		# need to pass in already explored addresses also
 		newGraphString, exploredAddresses = buildSankey(exploredAddresses, edge_factory, edges, address)
 		result = {'graphString': newGraphString, 'explored': str(list(exploredAddresses))}
 		
@@ -80,8 +82,8 @@ def build(request):
 		return HttpResponse('NOPE!')
 
 def buildSankey(exploredAddresses, edge_factory, edges, address):
-	print 'explored:', exploredAddresses
-	print 'address:', address
+	# print 'explored:', exploredAddresses
+	# print 'address:', address
 	address_string = address
 	address_object = blockexplorer.get_address(address_string)
 	transactions = address_object.transactions

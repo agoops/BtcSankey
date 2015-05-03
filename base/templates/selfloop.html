@@ -27,9 +27,10 @@
             height: 99%;
             float: left;
             position: absolute;
-            width: -moz-calc(80% - 45px);
-            width: -webkit-calc(80% - 45px);
-            width: calc(80% - 45px);
+            width: -moz-calc(100% - 45px);
+            width: -webkit-calc(100% - 45px);
+            width: calc(100% - 45px);
+            margin-top: 50;
         }
         a {
             text-decoration: none;
@@ -174,9 +175,14 @@
     <!--TITLELBAR-->
 
     <div id="titlebar">
-        <span id="titletext" class="pagetitle">Sankey Diagram</span>
+        <span id="titletext" class="pagetitle">Bitcoin Address-to-Address Visualizer</span>
+        <h4>Proof of Concept. Click and drag to rearrange nodes. Double click a node to expand it, and "explore" that address.
+        Note**  A node with a very high number of edges will not dispaly cleanly as of now. Controls will be added later to make these graphs readable.
+        For the example provided, try expanding the nodes on the right side. Click on the top left node to see the graph go bonkers.
+        </h4>
+    
     </div>
-	
+
 	
 	<!--PAGE WRAPPER-->
 
