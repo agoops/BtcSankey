@@ -10,22 +10,13 @@ import ast
 # Create your views here.
 
 
-def index(request):
-	template = loader.get_template('sankey.html')
-	jsonString = getSankey('1DJv4wgJXCwK4m2BEmjg5P4meYKhKtcp9K')
-	# print jsonString
-	jsonObject = json.loads(jsonString)
-	context = RequestContext(request, {'jsonObject': jsonObject, 'jsonString': jsonString})
-	# return render(request, 'sankey.html')
-	return HttpResponse(template.render(context))
-
+# Splash Page - Entry Point
 def landing(request):
 	template = loader.get_template('landing.html')
 	context = RequestContext(request)
 	return HttpResponse(template.render(context))
 
-
-	
+# Endpoint for first graph
 def loop(request):
 	if request.method == "POST":
 		address = request.POST.get('address')
@@ -39,6 +30,29 @@ def loop(request):
 	if request.method == "GET":
 		return HttpResponse("You have to start from the landing page as of now!")
 
+# helper method to build first sankey page
+def getSankey(address):
+	unexploredAddresses = {}
+	exploredAddresses = set()
+	edges = []
+	edge_factory = EdgeFactory()
+
+	# address_string = popUnexploredAddress(unexploredAddresses)
+	address_string = address
+	address_object = blockexplorer.get_address(address_string)
+	transactions = address_object.transactions
+	for t in transactions:
+		inputs = t.inputs
+		outputs = t.outputs
+		createLeavingEdges(exploredAddresses, unexploredAddresses, edge_factory, edges, address_string, inputs, outputs)
+		createIncomingEdges(exploredAddresses, unexploredAddresses, edge_factory, edges, address_string, inputs, outputs)
+
+	exploredAddresses.add(address_string)
+	result = printSankeyInfo(edge_factory, edges)
+	return result, exploredAddresses
+
+# endpoint to build up sankey when node is double clicked
+# Note: dblclick for nodes is assigned in food.js. Search "dblclick"
 @csrf_exempt
 def build(request):
 	if request.method == 'POST':
@@ -47,13 +61,11 @@ def build(request):
 		explored = request.POST.get('explored')
 		exploredAddresses = set(ast.literal_eval(explored))
 		if (address in exploredAddresses):
+			# Instead of returning string and having it render again, 
+			# I can just send a note saying do nothing
 			result = {'graphString': graphString, 'explored': str(list(exploredAddresses))}
 			return HttpResponse(json.dumps(result))
-		# print ''
-		# print address
-		# print explored
-		# print graphString
-		# print ''
+	
 
 		edge_factory = EdgeFactory()
 		edges = []
@@ -81,6 +93,7 @@ def build(request):
 	else:
 		return HttpResponse('NOPE!')
 
+# helper method for when node is double clicked
 def buildSankey(exploredAddresses, edge_factory, edges, address):
 	# print 'explored:', exploredAddresses
 	# print 'address:', address
@@ -98,25 +111,24 @@ def buildSankey(exploredAddresses, edge_factory, edges, address):
 	result = printSankeyInfo(edge_factory, edges)
 	return result, exploredAddresses
 
-def getSankey(address):
-	unexploredAddresses = {}
-	exploredAddresses = set()
-	edges = []
-	edge_factory = EdgeFactory()
+# def index(request):
+# 	template = loader.get_template('sankey.html')
+# 	jsonString = getSankey('1DJv4wgJXCwK4m2BEmjg5P4meYKhKtcp9K')
+# 	# print jsonString
+# 	jsonObject = json.loads(jsonString)
+# 	context = RequestContext(request, {'jsonObject': jsonObject, 'jsonString': jsonString})
+# 	# return render(request, 'sankey.html')
+# 	return HttpResponse(template.render(context))
 
-	# address_string = popUnexploredAddress(unexploredAddresses)
-	address_string = address
-	address_object = blockexplorer.get_address(address_string)
-	transactions = address_object.transactions
-	for t in transactions:
-		inputs = t.inputs
-		outputs = t.outputs
-		createLeavingEdges(exploredAddresses, unexploredAddresses, edge_factory, edges, address_string, inputs, outputs)
-		createIncomingEdges(exploredAddresses, unexploredAddresses, edge_factory, edges, address_string, inputs, outputs)
 
-	exploredAddresses.add(address_string)
-	result = printSankeyInfo(edge_factory, edges)
-	return result, exploredAddresses
+
+
+	
+
+
+
+
+
 
 
 
